@@ -18,9 +18,9 @@ public class PredictServiceTest {
 
     @Test
     void test() throws Exception {
-        InputStream in = new BufferedInputStream(new FileInputStream("C:/quickdraw/sample.jpg"));
+        InputStream in = new BufferedInputStream(new FileInputStream("C:/quick_draw/sample.jpg"));
 
         MockMultipartFile file = new MockMultipartFile("file", "sample.jpg", "image/jpeg", in);
-
+        service.process(file);
     }
 }

@@ -1,5 +1,7 @@
 package org.koreait.predict.services;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.koreait.global.configs.FileProperties;
 import org.koreait.global.configs.PythonProperties;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 @EnableConfigurationProperties({FileProperties.class, PythonProperties.class})
 public class PredictService {
 
+    private final ObjectMapper om;
     private final FileProperties fileProperties;
     private final PythonProperties pythonProperties;
     private final WebApplicationContext ctx;
@@ -51,7 +54,7 @@ public class PredictService {
                 if (statusCode == 0) {
                     String json = process.inputReader().lines().collect(Collectors.joining());
 
-                    System.out.println("result:" + json);
+                    return om.readValue(json, new TypeReference<>() {});
                 } else {
                     System.out.println("statusCode:" + statusCode);
                     process.errorReader().lines().forEach(System.out::println);
