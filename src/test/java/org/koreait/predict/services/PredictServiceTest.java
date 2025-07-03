@@ -14,7 +14,8 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -44,6 +45,8 @@ public class PredictServiceTest {
 
     @Test
     void test2() throws Exception{
-        mockMvc.perform(post())
+        mockMvc.perform(multipart("/quickdraw/predict")
+                .file(file))
+                .andDo(print());
     }
 }
