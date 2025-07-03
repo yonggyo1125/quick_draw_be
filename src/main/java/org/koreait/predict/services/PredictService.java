@@ -1,6 +1,5 @@
 package org.koreait.predict.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.koreait.global.configs.FileProperties;
 import org.koreait.global.configs.PythonProperties;
@@ -14,7 +13,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Lazy
@@ -47,23 +45,13 @@ public class PredictService {
             ProcessBuilder builder = isProduction ? new ProcessBuilder("/bin/sh", activationCommand) : new ProcessBuilder(activationCommand); // 가상환경 활성화
             Process process = builder.start();
             if (process.waitFor() == 0) { // 정상 수행된 경우
-                builder = new ProcessBuilder(pythonPath, properties.getTrend() + "/trend.py", fileProperties.getPath() + "/trend", url);
+                builder = new ProcessBuilder(pythonPath, pythonProperties.getModel() + "/predict.py", imagePath);
                 process = builder.start();
                 int statusCode = process.waitFor();
                 if (statusCode == 0) {
                     String json = process.inputReader().lines().collect(Collectors.joining());
-                    CollectedTrend item = om.readValue(json, CollectedTrend.class);
 
-                    String wordCloud = String.format("%s/trend/%s", fileProperties.getUrl(), item.getImage());
-                    try {
-                        String keywords = om.writeValueAsString(item.getKeywords());
-                        Trend data = new Trend();
-                        data.setCategory(url.contains("news.naver.com") ? "NEWS" : "" + Objects.hash(url));
-                        data.setWordCloud(wordCloud);
-                        data.setKeywords(keywords);
-                        repository.save(data);
-                    } catch (JsonProcessingException e) {}
-
+                    System.out.println("result:" + json);
                 } else {
                     System.out.println("statusCode:" + statusCode);
                     process.errorReader().lines().forEach(System.out::println);
