@@ -1,0 +1,8 @@
+server:
+  port: 3001
+
+# 파이썬 설정
+python:
+  path:
+    base: ${python.base}
+    model: ${python.model}
