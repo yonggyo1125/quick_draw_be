@@ -33,7 +33,7 @@ public class PredictServiceTest {
     void init() throws Exception {
         InputStream in = new BufferedInputStream(new FileInputStream("C:/quick_draw/sample.jpg"));
 
-        file = new MockMultipartFile("file", "sample.jpg", "image/jpeg", in);
+        file = new MockMultipartFile("image", "sample.jpg", "image/jpeg", in);
     }
 
     @Test
