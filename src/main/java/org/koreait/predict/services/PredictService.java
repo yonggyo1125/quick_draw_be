@@ -39,7 +39,7 @@ public class PredictService {
             String activationCommand = null, pythonPath = null;
             if (isProduction) { // 리눅스 환경, 서비스 환경
                 activationCommand = String.format("%s/activate", pythonProperties.getBase());
-                pythonPath = pythonProperties.getBase() + "/python3";
+                pythonPath = pythonProperties.getBase() + "/python";
             } else { // 윈도우즈 환경
                 activationCommand = String.format("%s/activate.bat", pythonProperties.getBase());
                 pythonPath = pythonProperties.getBase() + "/python.exe";
